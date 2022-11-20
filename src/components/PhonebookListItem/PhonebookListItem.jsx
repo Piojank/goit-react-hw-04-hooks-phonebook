@@ -1,22 +1,21 @@
-
 import PropTypes from 'prop-types';
+import style from './PhonebookListItem.module.css';
 
-const PhonebookListItem = ({ name, number, id, onDelete }) => {
-    return (
-        <li className="list-item">
-            {`${name}: `}
-            <span>{number}</span>
-            <button type="button" id={id} onClick={event => onDelete(event.target.id)}>
-                Delete
-            </button>
-        </li>
-    );
+const PhonebookListElement = ({ id, name, number, onDelete }) => (
+    <li className={style.PhonebookList__item} key={id}>
+        <span className={style.PhonebookList__text}>{name}: </span>
+        <span className={style.PhonebookList__text}>{number}: </span>
+        <button className={style.PhonebookList__button} onClick={() => onDelete(id)}>
+        Delete
+        </button>
+    </li>
+);
+
+PhonebookListElement.propTypes = {
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
-PhonebookListItem.propTypes = {
-    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    id: PropTypes.string,
-};
-
-export default PhonebookListItem;
+export default PhonebookListElement;

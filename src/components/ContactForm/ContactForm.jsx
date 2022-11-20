@@ -1,66 +1,66 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-class ContactForm extends Component {
+import shortid from 'shortid';
+import style from './ContactForm.module.css';
 
-    static defaultProps = {
-        name: '',
-        number: '',
-    };
-    
-    state = {
-        name: this.props.name,
-        number: this.props.number,
+    const INITIAL_STATE = {
+    name: '',
+    number: '',
     };
 
-    handleChange = event => {
-        const { name, value } = event.target;
-        this.setState({ [name]: value });
-    };
+    const ContactForm = ({ handleSubmit }) => {
+    const [name, setName] = useState(INITIAL_STATE.name);
+    const [number, setNumber] = useState(INITIAL_STATE.number);
 
-    handleSubmit = event => {
+    const nameInputId = shortid.generate();
+    const numberInputId = shortid.generate();
+
+    const onSubmit = event => {
         event.preventDefault();
-        const { name, number } = this.state;
-
-        this.props.onAddContact(name, number);
-        this.setState({ name: '', number: '' });
+        onSubmit && handleSubmit({ name: name, number: number });
+        reset();
     };
 
-    render() {
-        const { name, number } = this.state;
-        return (
-        <form onSubmit={this.handleSubmit}>
-            <label>
-                Name
-                <input
-                    className="input"
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={this.handleChange}
-                ></input>
-            </label>
-            <label>
-            Number
-                <input
-                    className="input"
-                    type="text"
-                    name="number"
-                    value={number}
-                    onChange={this.handleChange}
-                ></input>
-            </label>
-            <br />
-            <button className="btn" type="submit" disabled={!name || !number}>
-            Add contact
-            </button>
+    const reset = () => {
+        setName(INITIAL_STATE.name);
+        setNumber(INITIAL_STATE.number);
+    };
+
+    return (
+        <form className={style.FormInput} onSubmit={onSubmit}>
+        <label htmlFor={nameInputId}>Name</label>
+        <input
+            type="text"
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required
+            value={name}
+            onChange={event => setName(event.target.value)}
+            id={nameInputId}
+            className={style.FormInput__input}
+        />
+        <label htmlFor={numberInputId}>Number</label>
+        <input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+            value={number}
+            onChange={event => setNumber(event.target.value)}
+            id={numberInputId}
+            className={style.FormInput__input}
+        />
+        <button type="submit" className={style.FormButton}>
+            Add Contact
+        </button>
         </form>
-        );
-    }
-}
+    );
+    };
 
     ContactForm.propTypes = {
-        name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    handleSubmit: PropTypes.func.isRequired,
     };
 
 export default ContactForm;
