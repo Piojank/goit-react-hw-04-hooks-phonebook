@@ -9,7 +9,6 @@ const INITIAL_STATE = {
 };
 
 export const ContactForm = ({ handleSubmit }) => {
-
     const [name, setName] = useState(INITIAL_STATE.name);
     const [number, setNumber] = useState(INITIAL_STATE.number);
 
