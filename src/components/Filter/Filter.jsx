@@ -1,7 +1,7 @@
 import s from './Filter.module.css';
 import PropTypes from 'prop-types';
 
-export const Filter = ({ value, onFilterChange }) => {
+export const Filter = ({ value, onChange }) => {
     return (
         <div className={s.filter}>
             <label className={s.label}>
@@ -9,8 +9,10 @@ export const Filter = ({ value, onFilterChange }) => {
                 <input
                     className={s.input}
                     value={value}
-                    onChange={e => onFilterChange(e.target.value)}
-                    type="name"
+                    type="text"
+                    name="filter"
+                    title="Filter contacts"
+                    onChange={onChange}
                 />
             </label>
         </div>

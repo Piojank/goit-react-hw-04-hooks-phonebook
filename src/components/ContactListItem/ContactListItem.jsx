@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 
 export const ContactListItem = ({ name, number, id, onDelete }) => {
     return (
-        <li className={s.list__item}>
+        <li className={s.list__item} key={id}>
             {`${name}: `}
             <span className={s.list__number}>{number}</span>
             <button 
                 className={s.list__btn} 
-                id={id}
-                onClick={e => onDelete(e.target.id)}
+                onClick={() => onDelete(id)}
             >
                 Delete
             </button>
@@ -21,4 +20,5 @@ ContactListItem.propTypes = {
     name: PropTypes.string.isRequired,
     number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     id: PropTypes.string,
+    onDelete: PropTypes.func.isRequired,
 };
